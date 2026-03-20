@@ -17,7 +17,9 @@ function matchScore(searchTerms: string[], values: string[]): number {
   return score;
 }
 
-export function searchProviders(
+// Original search function as fallback
+/*
+export function searchProvidersFallback(
   providers: Provider[],
   intent: LLMIntentResult
 ): Provider[] {
@@ -106,3 +108,42 @@ export function searchProviders(
     .slice(0, MAX_RESULTS)
     .map((s) => s.provider);
 }
+  */
+
+// Main search function - uses Chroma vector search with fallback
+export async function searchProviders(
+  providers: Provider[],
+  intent: LLMIntentResult
+): Promise<Provider[]> {
+  // Try Chroma vector search first
+  try {
+    const { searchProvidersVector } = await import("./chroma");
+    const matchedIds = await searchProvidersVector(intent);
+
+    console.log(matchedIds)
+    
+    if (matchedIds.length > 0) {
+      // Map IDs back to providers (IDs are provider_0, provider_1, etc.)
+      const idToIndex = new Map(
+        matchedIds.map((id) => [id, parseInt(id.replace("provider_", ""), 10)])
+      );
+      
+      return providers
+        .filter((_, index) => idToIndex.has(`provider_${index}`))
+        .slice(0, MAX_RESULTS);
+    }
+  } catch (error) {
+    console.warn("Chroma search failed, using fallback:", error);
+  }
+  return []
+}
+
+/*
+// Synchronous version for backwards compatibility
+export function searchProvidersSync(
+  providers: Provider[],
+  intent: LLMIntentResult
+): Provider[] {
+  return searchProvidersFallback(providers, intent);
+}
+*/

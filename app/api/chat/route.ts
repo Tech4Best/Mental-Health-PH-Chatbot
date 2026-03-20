@@ -3,9 +3,29 @@ import { getCrisisResponse } from "@/lib/crisis";
 import { getProviders } from "@/lib/sheets";
 import { extractIntent, generateResponse } from "@/lib/groq";
 import { searchProviders } from "@/lib/providers";
-import type { ChatRequest, ChatResponse } from "@/lib/types";
+import { indexProviders, isCollectionPopulated } from "@/lib/chroma";
+import type { ChatRequest, ChatResponse, Provider } from "@/lib/types";
 
 export const runtime = "nodejs";
+
+// Track if we've initialized Chroma
+let chromaInitialized = false;
+
+async function ensureChromaInitialized(providers: Provider[]): Promise<void> {
+  if (chromaInitialized) return;
+  
+  try {
+    const isPopulated = await isCollectionPopulated();
+    if (!isPopulated) {
+      console.log("Initializing Chroma with providers...");
+      await indexProviders(providers);
+    }
+    chromaInitialized = true;
+    console.log("Chroma initialized successfully");
+  } catch (error) {
+    console.warn("Failed to initialize Chroma, will use fallback search:", error);
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -41,15 +61,18 @@ export async function POST(request: Request) {
       return NextResponse.json(response);
     }
 
-    // 4. Search providers if the intent is to find one
+    // 4. Ensure Chroma is initialized with providers
+    await ensureChromaInitialized(allProviders);
+
+    // 5. Search providers if the intent is to find one
     const matchedProviders =
       intent.intent === "find_provider"
-        ? searchProviders(allProviders, intent)
+        ? await searchProviders(allProviders, intent)
         : [];
 
     console.log("Matched Providers:", matchedProviders.length)
 
-    // 5. Generate conversational response via Groq LLM
+    // 6. Generate conversational response via Groq LLM
     const responseMessage = await generateResponse(
       intent,
       matchedProviders,
