@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      chromadb:
-        specifier: ^3.4.0
-        version: 3.4.0
       googleapis:
         specifier: ^171.4.0
         version: 171.4.0
@@ -20,9 +17,6 @@ importers:
       next:
         specifier: 16.2.0
         version: 16.2.0(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      openai:
-        specifier: ^6.32.0
-        version: 6.32.0(zod@4.3.6)
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -826,41 +820,6 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
-
-  chromadb-js-bindings-darwin-arm64@1.3.1:
-    resolution: {integrity: sha512-MMo+TX8tRrhy/0KGrA30kVTZ+EwrRoXRSQA7EGLuKW6FTEVX7hbF5l0EFWgDTw6YPX/KY2ySYNQH3VFwRyxYFA==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [darwin]
-
-  chromadb-js-bindings-darwin-x64@1.3.1:
-    resolution: {integrity: sha512-zboZ29wtP7vrevfYhNXFToSM9sTaXP+KALYF4B6wJNp4jymBRSAzhAsHBrVmAJQxgPEJatoODAWqsVxaGLYkog==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [darwin]
-
-  chromadb-js-bindings-linux-arm64-gnu@1.3.1:
-    resolution: {integrity: sha512-JPzoIy5vb4Gzu7kZnCkcMtsv+HPx/LWBFu72IDbnkUp8UleNyXup7fVX/tUvwHq+OPtj7ZB4YWwiP3SzKIWEgA==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
-  chromadb-js-bindings-linux-x64-gnu@1.3.1:
-    resolution: {integrity: sha512-nQvVhmHs2XXbzA+Xka8A4UMiyMlk86AFmiy1Pt+kzQkuJT5vOMKOcgJW/Nh2m0CtEjkzvj4Mxr2/31BiLil7Hg==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
-  chromadb-js-bindings-win32-x64-msvc@1.3.1:
-    resolution: {integrity: sha512-3B3WwT1aM9vxFZBqlDgnA+R025b8pOudGM4hEZTmxV2rHND3Hn7C87mQO5WsUMarOUmX4Sd1NlhC2ANKCIWfLw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [win32]
-
-  chromadb@3.4.0:
-    resolution: {integrity: sha512-PegxNXByBxMCHq6eFsLQQUNemxufGP+6VbfGQVs/cfNTYGur4gq+vVPFPKNtri12ariBvgbORkH66Ma/YKc7PQ==}
-    engines: {node: '>=20'}
-    hasBin: true
 
   client-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
@@ -1688,18 +1647,6 @@ packages:
   object.values@1.2.1:
     resolution: {integrity: sha512-gXah6aZrcUxjWg2zR2MwouP2eHlCBzdV4pygudehaKXSGW4v2AsRQUK+lwwXhii6KFZcunEnmSUoYp5CXibxtA==}
     engines: {node: '>= 0.4'}
-
-  openai@6.32.0:
-    resolution: {integrity: sha512-j3k+BjydAf8yQlcOI7WUQMQTbbF5GEIMAE2iZYCOzwwB3S2pCheaWYp+XZRNAch4jWVc52PMDGRRjutao3lLCg==}
-    hasBin: true
-    peerDependencies:
-      ws: ^8.18.0
-      zod: ^3.25 || ^4.0
-    peerDependenciesMeta:
-      ws:
-        optional: true
-      zod:
-        optional: true
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -2826,31 +2773,6 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
-  chromadb-js-bindings-darwin-arm64@1.3.1:
-    optional: true
-
-  chromadb-js-bindings-darwin-x64@1.3.1:
-    optional: true
-
-  chromadb-js-bindings-linux-arm64-gnu@1.3.1:
-    optional: true
-
-  chromadb-js-bindings-linux-x64-gnu@1.3.1:
-    optional: true
-
-  chromadb-js-bindings-win32-x64-msvc@1.3.1:
-    optional: true
-
-  chromadb@3.4.0:
-    dependencies:
-      semver: 7.7.4
-    optionalDependencies:
-      chromadb-js-bindings-darwin-arm64: 1.3.1
-      chromadb-js-bindings-darwin-x64: 1.3.1
-      chromadb-js-bindings-linux-arm64-gnu: 1.3.1
-      chromadb-js-bindings-linux-x64-gnu: 1.3.1
-      chromadb-js-bindings-win32-x64-msvc: 1.3.1
-
   client-only@0.0.1: {}
 
   color-convert@2.0.1:
@@ -3834,10 +3756,6 @@ snapshots:
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
-
-  openai@6.32.0(zod@4.3.6):
-    optionalDependencies:
-      zod: 4.3.6
 
   optionator@0.9.4:
     dependencies:
