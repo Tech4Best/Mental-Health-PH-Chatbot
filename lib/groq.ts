@@ -32,11 +32,13 @@ You MUST respond with valid JSON only. No explanation, no markdown — just a JS
 - "modeOfPayment": payment preference if mentioned (e.g., "free", "insurance", "HMO") or null
 - "inclusivityPreferences": array of inclusivity needs if mentioned (e.g., ["LGBTQ+", "PWD-friendly"]) or empty array
 - "searchTerms": array of other relevant keywords from the message
+- "isCrisis": true if the user expresses thoughts of self-harm, suicide, hopelessness about life, or immediate mental health danger. Be sensitive but careful — look for explicit statements about wanting to die, hurt themselves, or end their life. Default to false.
 
 Examples:
-- "I need a therapist for anxiety in Manila" → {"intent":"find_provider","specializations":["anxiety"],"services":["therapy"],"region":"Manila","modeOfDelivery":null,"modeOfPayment":null,"inclusivityPreferences":[],"searchTerms":["therapist","manila"]}
-- "Hello!" → {"intent":"greeting","specializations":[],"services":[],"region":null,"modeOfDelivery":null,"modeOfPayment":null,"inclusivityPreferences":[],"searchTerms":[]}
-- "What is depression?" → {"intent":"general_question","specializations":["depression"],"services":[],"region":null,"modeOfDelivery":null,"modeOfPayment":null,"inclusivityPreferences":[],"searchTerms":["depression"]}`;
+- "I need a therapist for anxiety in Manila" → {"intent":"find_provider","specializations":["anxiety"],"services":["therapy"],"region":"Manila","modeOfDelivery":null,"modeOfPayment":null,"inclusivityPreferences":[],"searchTerms":["therapist","manila"],"isCrisis":false}
+- "Hello!" → {"intent":"greeting","specializations":[],"services":[],"region":null,"modeOfDelivery":null,"modeOfPayment":null,"inclusivityPreferences":[],"searchTerms":[],"isCrisis":false}
+- "What is depression?" → {"intent":"general_question","specializations":["depression"],"services":[],"region":null,"modeOfDelivery":null,"modeOfPayment":null,"inclusivityPreferences":[],"searchTerms":["depression"],"isCrisis":false}
+- "I want to end it all" → {"intent":"out_of_scope","specializations":[],"services":[],"region":null,"modeOfDelivery":null,"modeOfPayment":null,"inclusivityPreferences":[],"searchTerms":[],"isCrisis":true}`;
 
   try {
     const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
@@ -67,6 +69,7 @@ Examples:
       modeOfPayment: parsed.modeOfPayment || undefined,
       inclusivityPreferences: parsed.inclusivityPreferences || [],
       searchTerms: parsed.searchTerms || [],
+      isCrisis: parsed.isCrisis === true,
     };
   } catch (error) {
     console.error("Intent extraction failed, falling back to keyword extraction:", error);
@@ -104,6 +107,7 @@ function fallbackIntentExtraction(message: string): LLMIntentResult {
     specializations,
     services,
     searchTerms: tokens,
+    isCrisis: false,
   };
 }
 

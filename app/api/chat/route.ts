@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { detectCrisis } from "@/lib/crisis";
+import { getCrisisResponse } from "@/lib/crisis";
 import { getProviders } from "@/lib/sheets";
 import { extractIntent, generateResponse } from "@/lib/groq";
 import { searchProviders } from "@/lib/providers";
@@ -21,32 +21,33 @@ export async function POST(request: Request) {
     const message = body.message.trim();
     const history = Array.isArray(body.history) ? body.history : [];
 
-    // 1. Crisis detection — always first, overrides everything
-    const crisisResult = detectCrisis(message);
-    if (crisisResult.isCrisis) {
+    // 1. Fetch providers from cache
+    const allProviders = await getProviders();
+
+    console.log("Providers:", allProviders.length)
+
+    // 2. Extract intent via Groq LLM (includes crisis detection)
+    const intent = await extractIntent(message, history);
+
+    console.log("Intent:", intent)
+
+    // 3. Check for crisis — if detected, return crisis response immediately
+    if (intent.isCrisis) {
       const response: ChatResponse = {
-        message: crisisResult.response!,
+        message: getCrisisResponse(),
         providers: [],
         isCrisis: true,
       };
       return NextResponse.json(response);
     }
-    console.log("Message:", message)
-    // 2. Fetch providers from cache
-    const allProviders = await getProviders();
-
-    console.log("Providers:", allProviders.length)
-
-    // 3. Extract intent via Groq LLM
-    const intent = await extractIntent(message, history);
-
-    console.log("Intent:", intent)
 
     // 4. Search providers if the intent is to find one
     const matchedProviders =
       intent.intent === "find_provider"
         ? searchProviders(allProviders, intent)
         : [];
+
+    console.log("Matched Providers:", matchedProviders.length)
 
     // 5. Generate conversational response via Groq LLM
     const responseMessage = await generateResponse(

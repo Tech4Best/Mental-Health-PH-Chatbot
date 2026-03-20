@@ -66,4 +66,5 @@ export interface LLMIntentResult {
   modeOfPayment?: string;
   inclusivityPreferences?: string[];
   searchTerms: string[];
+  isCrisis: boolean;
 }

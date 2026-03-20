@@ -1,34 +1,3 @@
-export const CRISIS_TRIGGER_PHRASES: string[] = [
-  "suicide",
-  "suicidal",
-  "kill myself",
-  "kill me",
-  "end my life",
-  "end it all",
-  "hurt myself",
-  "harm myself",
-  "self-harm",
-  "self harm",
-  "selfharm",
-  "want to die",
-  "wanna die",
-  "i want to die",
-  "better off dead",
-  "no reason to live",
-  "not worth living",
-  "take my own life",
-  "take my life",
-  "jump off",
-  "hang myself",
-  "slit my",
-  "overdose",
-  "cut myself",
-  "ending it",
-  "goodbye cruel world",
-  "no point in living",
-  "planning to die",
-];
-
 export interface CrisisHotline {
   name: string;
   number: string;
