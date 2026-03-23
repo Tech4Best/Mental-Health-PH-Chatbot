@@ -42,7 +42,7 @@ export function searchProviders(
   if (intent.modeOfDelivery) {
     const modeLower = intent.modeOfDelivery.toLowerCase();
     const modeFiltered = filtered.filter((p) =>
-      p.modeOfDelivery.some((m) => m.toLowerCase().includes(modeLower))
+      p.modeOfDelivery.some((m) => m.toLowerCase() === modeLower || m.toLowerCase() === 'hybrid')
     );
     if (modeFiltered.length > 0) {
       filtered = modeFiltered;
